@@ -3807,7 +3807,19 @@ $(function(){
 
            //for remote source just set value, text is updated by initSelection
            if(!this.$input.data('select2')) {
-               this.$input.val(value);
+               if (this.$input.is('select')) {
+                 if (value) { 
+                     value = value.split(this.getSeparator());
+                     var i, l, text, html_value = "";
+                     for (i = 0, l = value.length; i < l; i++) {
+                         text = $.trim(value[i]);
+                         html_value += '<option value="'+text+'" selected="selected">'+text+'</option>';
+                     }
+                     this.$input.html(html_value);
+                 }
+               } else {
+                 this.$input.val(value);
+               }
                this.$input.select2(this.options.select2);
            } else {
                //second argument needed to separate initial change from user's click (for autosubmit)   
